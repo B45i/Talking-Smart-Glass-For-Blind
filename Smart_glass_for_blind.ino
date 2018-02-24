@@ -84,11 +84,33 @@ void printDetail(uint8_t type, int value){
   }
 }
 
-void sayAlert(int distance) {
+void leftAlert(int distance) {
 
   if (millis() - timer > 3000) {
     timer = millis();
-    DFPlayer.play(distance);
+    DFPlayer.playLargeFolder(01, distance+1);
+  } 
+  if (DFPlayer.available()) {
+    printDetail(DFPlayer.readType(), DFPlayer.read()); //Print the detail message from DFPlayer
+  }
+}
+
+void centerAlert(int distance) {
+
+  if (millis() - timer > 3000) {
+    timer = millis();
+    DFPlayer.playLargeFolder(02, distance+1);
+  } 
+  if (DFPlayer.available()) {
+    printDetail(DFPlayer.readType(), DFPlayer.read()); //Print the detail message from DFPlayer
+  }
+}
+
+void rightAlert(int distance) {
+
+  if (millis() - timer > 3000) {
+    timer = millis();
+    DFPlayer.playLargeFolder(03, distance+1);
   } 
   if (DFPlayer.available()) {
     printDetail(DFPlayer.readType(), DFPlayer.read()); //Print the detail message from DFPlayer
@@ -136,8 +158,12 @@ void loop() {
   // Serial.println(rightDistance);
 
   if(leftDistance < minLeftDistance) {
-    // Serial.println("Obstacle on left");
-    sayAlert(leftDistance);
+    
+    Serial.print("Obstacle ");
+    Serial.print(leftDistance);
+    Serial.println(" CM to the left");
+
+    leftAlert(leftDistance);
     analogWrite(motorPinLeft, 512);
   }
   else {
@@ -145,8 +171,12 @@ void loop() {
   }
 
   if(centerDistance < minCenterDistance) {
-    // Serial.println("Obstacle ahed");
-    sayAlert(centerDistance);
+
+    Serial.print("Obstacle ");
+    Serial.print(centerDistance);
+    Serial.println(" CM ahed");
+
+    centerAlert(centerDistance);
     analogWrite(motorPinCenter, 512);
   }
   else {
@@ -154,8 +184,12 @@ void loop() {
   }
 
   if(rightDistance < minRightDistance) {
-    // Serial.println("Obstacle on right");
-    sayAlert(rightDistance);
+
+    Serial.print("Obstacle ");
+    Serial.print(rightDistance);
+    Serial.println(" CM to the right");
+
+    rightAlert(rightDistance);
     analogWrite(motorPinRight, 512);
   }
   else {
