@@ -12,15 +12,18 @@ const int echoPin2 = 5;
 const int trigPin3 = 6;
 const int echoPin3 = 7;
 
-const int motorPinLeft   = A0;
+
+const int motorPinRight  = A0;
 const int motorPinCenter = A1;
-const int motorPinRight  = A2;
+const int motorPinLeft   = A2;
 
 int minLeftDistance   = 100;
 int minCenterDistance = 100;
 int minRightDistance  = 100;
 
 static unsigned long timer = millis();
+
+int waitTime = 3500;
 
 NewPing sonarLeft(trigPin1, echoPin1 ,MAX_DISTANCE);
 NewPing sonarCenter(trigPin2, echoPin2 ,MAX_DISTANCE);
@@ -85,8 +88,8 @@ void printDetail(uint8_t type, int value){
 }
 
 void leftAlert(int distance) {
-
-  if (millis() - timer > 3000) {
+  
+  if (millis() - timer > waitTime) {
     timer = millis();
     DFPlayer.playLargeFolder(01, distance+1);
   } 
@@ -97,7 +100,7 @@ void leftAlert(int distance) {
 
 void centerAlert(int distance) {
 
-  if (millis() - timer > 3000) {
+  if (millis() - timer > waitTime) {
     timer = millis();
     DFPlayer.playLargeFolder(02, distance+1);
   } 
@@ -107,8 +110,8 @@ void centerAlert(int distance) {
 }
 
 void rightAlert(int distance) {
-
-  if (millis() - timer > 3000) {
+  
+  if (millis() - timer > waitTime) {
     timer = millis();
     DFPlayer.playLargeFolder(03, distance+1);
   } 
@@ -121,7 +124,7 @@ void setupDFPlayer() {
 
   mp3SoftwareSerial.begin(9600);
   Serial.println();
-  Serial.println(F("DFRobot DFPlayer Mini Demo"));
+  Serial.println(F("Blind assistancs smart glass..."));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
   
   if (!DFPlayer.begin(mp3SoftwareSerial)){
@@ -149,15 +152,15 @@ void loop() {
   int centerDistance  = sonarCenter.ping_cm();
   int rightDistance   = sonarRight.ping_cm();
 
-  // For debugging
-  // Serial.print("Left: ");
-  // Serial.print(leftDistance);
-  // Serial.print(", Center: ");
-  // Serial.print(centerDistance); 
-  // Serial.print(", Right: ");
-  // Serial.println(rightDistance);
+ // For debugging
+//   Serial.print("Left: ");
+//   Serial.print(leftDistance);
+//   Serial.print(", Center: ");
+//   Serial.print(centerDistance); 
+//   Serial.print(", Right: ");
+//   Serial.println(rightDistance);
 
-  if(leftDistance < minLeftDistance) {
+  if(leftDistance < minLeftDistance && leftDistance > 1) {
     
     Serial.print("Obstacle ");
     Serial.print(leftDistance);
@@ -170,7 +173,7 @@ void loop() {
     analogWrite(motorPinLeft, 0);
   }
 
-  if(centerDistance < minCenterDistance) {
+  if(centerDistance < minCenterDistance && centerDistance > 1) {
 
     Serial.print("Obstacle ");
     Serial.print(centerDistance);
@@ -183,7 +186,7 @@ void loop() {
     analogWrite(motorPinCenter, 0);
   }
 
-  if(rightDistance < minRightDistance) {
+  if(rightDistance < minRightDistance && rightDistance > 1) {
 
     Serial.print("Obstacle ");
     Serial.print(rightDistance);
