@@ -25,7 +25,7 @@ Circuit board used in this project is designed in the form of a spectacle, that 
 ### Optional
 
 * FTDI Breakout cable (only if you are using the pro mini)
-* My custom PCB  from jlcpcb.com
+* My custom PCB  from [jlcpcb.com](https://jlcpcb.com/quote/eda?eadLink=2&uuid=c2ed7d40916740bd957b6fa516fbd572) or [pcbway.com](https://www.pcbway.com/project/shareproject/Talking_Smart_Glass_For_Blind.html)
 * 3W Speaker
 
 ## The Circuit Diagram
